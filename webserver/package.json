@@ -7,7 +7,6 @@
   "license": "MIT",
   "dependencies": {
     "collections": "^5.1.12",
-    "express": "^4.17.1",
-    "sleep": "^6.3.0"
+    "express": "^4.17.1"
   }
 }
