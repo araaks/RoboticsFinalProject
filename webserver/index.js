@@ -14,13 +14,14 @@ app.get("/hello", (req, res) => {
 });
 
 // /drive_direct?left=-300&right=300
-app.post("/drive_direct", (req, res) => {
-  const left = req.query.left;
-  const right = req.query.right;
+app.get("/drive_direct/:left/:right", (req, res) => {
+  const left = req.params.left;
+  const right = req.params.right;
   if (!buff.has("buff")) {
     buff.push("drive_direct");
   }
   buff_vals.set("drive_direct", `(${left}, ${right})`);
+  res.send("Sent!");
 })
 
 app.post("/kill", (req, res) => {
@@ -31,7 +32,8 @@ var sendCycle = function () {
   if (buff.length > 0) {
     var toSend = buff.shift();
     var toSendParams = buff_vals.get(toSend)
-    buff_vals.delete(toSend)
+    console.log(toSendParams)
+    // make predone string
 
     if (client.write(`${toSend}${toSendParams}`)) {
       console.log("Sent: " + toSend);
@@ -41,6 +43,7 @@ var sendCycle = function () {
     } else {
       console.log("Error while sending: " + toSend);
     }
+    buff_vals.delete(toSend)
   }
 
   setTimeout(function () {
