@@ -12,6 +12,17 @@ app.get("/hello", (req, res) => {
   res.send("Hello World!");
 });
 
+// /drive_direct?left=-300&right=300
+app.post("/drive_direct", (req, res) => {
+  const left = req.query.left;
+  const right = req.query.right;
+  buff.push(`a drive_direct(${left}, ${right})`);
+})
+
+app.post("/kill", (req, res) => {
+  buff.unshift("c"); // first to process
+})
+
 var sendCycle = function () {
   if (buff.length > 0) {
     var toSend = buff.shift();
@@ -27,7 +38,7 @@ var sendCycle = function () {
 
   setTimeout(function () {
     sendCycle();
-  }, 1100);
+  }, 1150);
 };
 
 app.listen(port, () => {
@@ -36,10 +47,7 @@ app.listen(port, () => {
     console.log("Connected to Pi");
     buff.push("i /dev/ttyUSB0");
 		sendCycle();
-
     buff.push("a set_ascii_leds(98, 101, 102, 102)");
-    buff.push("a drive_direct(-300, 300)");
-    buff.push("c");
   });
   client.on("data", function (data) {
     console.log("Received: " + data);
