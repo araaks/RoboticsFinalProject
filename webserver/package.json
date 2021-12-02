@@ -1,0 +1,12 @@
+{
+  "name": "webserver",
+  "version": "1.0.0",
+  "description": "webserver",
+  "main": "index.js",
+  "author": "Kai Richardson",
+  "license": "MIT",
+  "dependencies": {
+    "collections": "^5.1.12",
+    "express": "^4.17.1"
+  }
+}
