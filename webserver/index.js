@@ -7,6 +7,7 @@ var client = new net.Socket();
 var List = require("collections/list");
 
 var buff = new List();
+var buff_vals = new Map();
 
 app.get("/hello", (req, res) => {
   res.send("Hello World!");
@@ -16,7 +17,10 @@ app.get("/hello", (req, res) => {
 app.post("/drive_direct", (req, res) => {
   const left = req.query.left;
   const right = req.query.right;
-  buff.push(`a drive_direct(${left}, ${right})`);
+  if (!buff.has("buff")) {
+    buff.push("drive_direct");
+  }
+  buff_vals.set("drive_direct", `(${left}, ${right})`);
 })
 
 app.post("/kill", (req, res) => {
@@ -26,7 +30,10 @@ app.post("/kill", (req, res) => {
 var sendCycle = function () {
   if (buff.length > 0) {
     var toSend = buff.shift();
-    if (client.write(toSend)) {
+    var toSendParams = buff_vals.get(toSend)
+    buff_vals.delete(toSend)
+
+    if (client.write(`${toSend}${toSendParams}`)) {
       console.log("Sent: " + toSend);
       if (toSend == "c") {
         client.destroy();
