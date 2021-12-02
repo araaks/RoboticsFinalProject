@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, Pressable, Button, Dimensions, Alert } from 'react-native';
 import { Video, AVPlaybackStatus } from 'expo-av';
+import VerticalSlider from 'rn-vertical-slider';
 import axios from 'axios';
 
 const windowWidth = Dimensions.get('window').width;
@@ -25,12 +26,10 @@ export default class Home extends React.Component {
         }
 
     render() {
-        // const video = React.useRef(null);
-        // const[status, setStatus] = React.useState({ });
         return (
             <>
                 <View style={styles.container}>
-                    <Video
+                    {/* <Video
                         ref={r => (this.vid = r)}
                         source={{
                             uri: 'http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4',
@@ -46,18 +45,31 @@ export default class Home extends React.Component {
                             this.setState({ fullscreen: true });
                             console.log(e);
                         }}
+                    /> */}
+
+                    {/* Vertical slider for tank controls of the robot */}
+                    <VerticalSlider
+                        leftSpeed={1}
+                        disabled={false}
+                        min={0}
+                        max={100}
+                        onChange={(value) => {
+                            console.log("CHANGE", leftSpeed);
+                        }}
+                        onComplete={(value) => {
+                            console.log("COMPLETE", leftSpeed);
+                        }}
+                        width={50}
+                        height={300}
+                        step={1}
+                        borderRadius={5}
+                        minimumTrackTintColor={"gray"}
+                        maximumTrackTintColor={"tomato"}
+                        showBallIndicator
+                        ballIndicatorColor={"gray"}
+                        ballIndicatorTextColor={"white"}
                     />
                 </View>
-                {/* CONTROL BUTTONS */}
-                {/* <div class="set wire">
-                <nav class="d-pad">
-                    <a class="up" href="#"></a>
-                    <a class="right" href="#"></a>
-                    <a class="down" href="#"></a>
-                    <a class="left" href="#"></a>
-                </nav>
-            </div> */}
-
             </>
         )
     }
@@ -69,7 +81,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#ecf0f1',
         // alignItems: 'center',
         justifyContent: 'center',
-        position: 'absolute'
+        position: 'absolute',
+        marginLeft: 100
     },
     buttonContainer: {
         flex: 1,
