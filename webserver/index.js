@@ -13,18 +13,18 @@ app.get("/hello", (req, res) => {
   res.send("Hello World!");
 });
 
-// /drive_direct?left=-300&right=300
+// /drive_direct/200/200
 app.get("/drive_direct/:left/:right", (req, res) => {
   const left = req.params.left;
   const right = req.params.right;
   if (!buff.has("buff")) {
-    buff.push("drive_direct");
+    buff.push("a drive_direct");
   }
-  buff_vals.set("drive_direct", `(${left}, ${right})`);
+  buff_vals.set("a drive_direct", `(${left}, ${right})`);
   res.send("OK");
 });
 
-app.post("/kill", (req, res) => {
+app.get("/kill", (req, res) => {
   buff.unshift("c"); // first to process
   res.send("OK");
 });
@@ -32,25 +32,23 @@ app.post("/kill", (req, res) => {
 var sendCycle = function () {
   if (buff.length > 0) {
     var toSend = buff.shift();
-    var toSendParams = buff_vals.get(toSend);
+    var toSendParams = buff_vals.get(toSend) ?? "";
     var stringToSend = `${toSend}${toSendParams}`;
-    console.log(stringToSend);
-    // make predone string
 
     if (client.write(stringToSend)) {
-      console.log("Sent: " + toSend);
-      if (toSend == "c") {
+      console.log("Sent: " + stringToSend);
+      if (stringToSend == "c") {
         client.destroy();
       }
     } else {
-      console.log("Error while sending: " + toSend);
+      console.log("Error while sending: " + stringToSend);
     }
     buff_vals.delete(toSend);
   }
 
   setTimeout(function () {
     sendCycle();
-  }, 1150);
+  }, 1200);
 };
 
 app.listen(port, () => {
