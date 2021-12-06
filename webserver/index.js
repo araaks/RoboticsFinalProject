@@ -33,10 +33,11 @@ var sendCycle = function () {
   if (buff.length > 0) {
     var toSend = buff.shift();
     var toSendParams = buff_vals.get(toSend)
-    console.log(toSendParams)
+    var stringToSend = `${toSend}${toSendParams}`;
+    console.log(stringToSend);
     // make predone string
 
-    if (client.write(`${toSend}${toSendParams}`)) {
+    if (client.write(stringToSend)) {
       console.log("Sent: " + toSend);
       if (toSend == "c") {
         client.destroy();
