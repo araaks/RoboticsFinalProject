@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Pressable, Button, Dimensions, Alert } from 'react-native';
-// import { Video, AVPlaybackStatus } from 'expo-av';
+import { StyleSheet, View, Dimensions } from 'react-native';
 import BigSlider from 'react-native-big-slider';
 import axios from 'axios';
 
@@ -24,74 +23,28 @@ export default class Home extends Component {
             .catch(function (error) {
                 console.log(error);
             });
+
+        var sendCycle = function () {
+            axios
+                .get(`192.168.1.212:3000/drive_direct/${right}/${left}`)
+                .then((res) => {
+                    console.log(`Sent: ${right}/${left}`);
+                })
+
+            setTimeout(function () {
+                sendCycle();
+            }, 600);
+        };
     }
+
+
 
     render() {
 
         return (
             <>
                 <View style={styles.container}>
-                    {/* <Video
-                        ref={r => (this.vid = r)}
-                        source={{
-                            uri: 'http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4',
-                        }}
-                        rate={1.0}
-                        volume={1.0}
-                        muted={false}
-                        resizeMode="cover"
-                        useNativeControls
-                        repeat
-                        style={{ width: 300, height: 300 }}
-                        onFullscreenUpdate={e => {
-                            this.setState({ fullscreen: true });
-                            console.log(e);
-                        }}
-                    /> */}
-
                     {/* Vertical slider for tank controls of the robot */}
-                    {/* <VerticalSlider
-                        value={1}
-                        disabled={false}
-                        min={0}
-                        max={100}
-                        onChange={(value) => {
-                            console.log("CHANGE", value);
-                        }}
-                        onComplete={(value) => {
-                            console.log("COMPLETE", value);
-                        }}
-                        width={100}
-                        height={300}
-                        step={1}
-                        borderRadius={10}
-                        minimumTrackTintColor={"gray"}
-                        maximumTrackTintColor={"tomato"}
-                        showBallIndicator
-                        ballIndicatorColor={"gray"}
-                        ballIndicatorTextColor={"white"}
-                    />
-                    <VerticalSlider
-                        value={1}
-                        disabled={false}
-                        min={0}
-                        max={100}
-                        onChange={(value) => {
-                            console.log("CHANGE", value);
-                        }}
-                        onComplete={(value) => {
-                            console.log("COMPLETE", value);
-                        }}
-                        width={100}
-                        height={300}
-                        step={1}
-                        borderRadius={10}
-                        minimumTrackTintColor={"gray"}
-                        maximumTrackTintColor={"tomato"}
-                        showBallIndicator
-                        ballIndicatorColor={"gray"}
-                        ballIndicatorTextColor={"white"}
-                    /> */}
                     <BigSlider
                         trackStyle={{ backgroundColor: 'rgb(255, 166, 102)' }}
                         maximumValue={300}
@@ -99,7 +52,6 @@ export default class Home extends Component {
                         value={this.state.left}
                         onValueChange={left => {
                             this.setState({ left })
-                            console.log(`LEFT: ${left}`)
                         }} />
 
                     <BigSlider
@@ -109,7 +61,6 @@ export default class Home extends Component {
                         value={this.state.right}
                         onValueChange={right => {
                             this.setState({ right })
-                            console.log(`RIGHT: ${right}`)
                         }} />
                 </View>
             </>
