@@ -22,17 +22,17 @@ app.get("/drive_direct/:left/:right", (req, res) => {
   }
   buff_vals.set("drive_direct", `(${left}, ${right})`);
   res.send("OK");
-})
+});
 
 app.post("/kill", (req, res) => {
   buff.unshift("c"); // first to process
   res.send("OK");
-})
+});
 
 var sendCycle = function () {
   if (buff.length > 0) {
     var toSend = buff.shift();
-    var toSendParams = buff_vals.get(toSend)
+    var toSendParams = buff_vals.get(toSend);
     var stringToSend = `${toSend}${toSendParams}`;
     console.log(stringToSend);
     // make predone string
@@ -45,7 +45,7 @@ var sendCycle = function () {
     } else {
       console.log("Error while sending: " + toSend);
     }
-    buff_vals.delete(toSend)
+    buff_vals.delete(toSend);
   }
 
   setTimeout(function () {
@@ -58,7 +58,7 @@ app.listen(port, () => {
   client.connect(5001, "192.168.1.106", function () {
     console.log("Connected to Pi");
     buff.push("i /dev/ttyUSB0");
-		sendCycle();
+    sendCycle();
     buff.push("a set_ascii_leds(98, 101, 102, 102)");
   });
   client.on("data", function (data) {
