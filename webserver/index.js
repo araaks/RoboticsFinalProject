@@ -21,10 +21,12 @@ app.post("/drive_direct", (req, res) => {
     buff.push("drive_direct");
   }
   buff_vals.set("drive_direct", `(${left}, ${right})`);
+  res.send("OK");
 })
 
 app.post("/kill", (req, res) => {
   buff.unshift("c"); // first to process
+  res.send("OK");
 })
 
 var sendCycle = function () {
